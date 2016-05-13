@@ -1,0 +1,26 @@
+{
+  "name": "fluffy-the-cat-api",
+  "description": "Fluffy the cat API",
+  "engines": {
+    "node": "5.9.1"
+  },
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.1",
+    "cors": "^2.7.1",
+    "express": "^4.13.3",
+    "mongoose": "^4.4.16",
+    "passport": "^0.3.2",
+    "passport-http-bearer": "^1.0.1"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Fluffy the cat API",
+  "description": "Fluffy the cat API",
+  "keywords": ["node", "express"],
+  "image": "heroku/nodejs"
+}
