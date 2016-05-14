@@ -17,6 +17,7 @@ app.use(cors());
 
 if(process.env.ENV==='dev'){
 	mongoose.connect('mongodb://localhost:27017/fluffy-the-cat');
+	require('./config/bootstrap.js')();
 }else {
 	mongoose.connect('mongodb://admin:admin@ds019472.mlab.com:19472/event-planner');
 }

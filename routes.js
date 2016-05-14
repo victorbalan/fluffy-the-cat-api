@@ -1,5 +1,4 @@
 var User = require('./model/user');
-
 var auth = require('./config/auth')(User);
 var userCtrl = require('./controllers/user')(User);
 var levelCtrl = require('./controllers/level')();
