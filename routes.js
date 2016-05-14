@@ -9,8 +9,9 @@ module.exports = function(router){
 		.post(userCtrl.save);
 	router.get('/me', auth.isAuthenticated, userCtrl.me);
 	router.post('/login', userCtrl.login);
-	router.get('/getNextLevel', levelCtrl.getNextLevel);
-	router.get('/getAllLevels', levelCtrl.getAllLevels);
+	router.get('/level/next', levelCtrl.getNextLevel);
+	router.get('/levels', levelCtrl.getAllLevels);
+	router.get('/levels/:id', levelCtrl.findOne);
 
 	router.get('/test', function(req, res){
 		res.json({message: 'Hello world!'});

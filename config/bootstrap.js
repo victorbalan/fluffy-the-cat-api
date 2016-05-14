@@ -12,10 +12,12 @@ module.exports = function () {
 
     function onFileContent(filename, content, difficulty, subDifficulty) {
         console.log(filename, difficulty, subDifficulty);
+				var jsonContent = JSON.stringify(JSON.parse(content));
+				console.log(jsonContent)
         var level = new Level({
             difficulty: difficulty,
             subDifficulty: subDifficulty,
-            map: content,
+            map: jsonContent,
             levelKey: difficulty + "-" + subDifficulty,
             createdAt: new Date()
         });
