@@ -16,12 +16,14 @@ module.exports = function () {
             difficulty: difficulty,
             subDifficulty: subDifficulty,
             map: content,
+            levelKey: difficulty + "-" + subDifficulty,
             createdAt: new Date()
         });
         level.save(function (err, saved) {
             if (err) {
                 console.log('Error saving level: ' + difficulty + ' : ' + subDifficulty);
-                console.log(err);
+                if (err.toString().indexOf('duplicate') > 0)
+                    console.log('It was a duplicate!');
             }
         });
         console.log(level);
