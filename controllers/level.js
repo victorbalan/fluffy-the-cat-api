@@ -2,24 +2,21 @@ var Level = require('../model/level');
 
 module.exports = function () {
     function getAllLevels(req, res) {
-        Level.find({}, function (err, levels) {
-            var levelMap = {};
-
-            levels.forEach(function (level) {
-                levelMap[level._id] = {
-                    difficulty: level.difficulty,
-                    subDifficulty: level.subDifficulty,
-                    levelKey: level.levelKey
-                };
-            });
-
-            res.send(levelMap);
+        Level.find().sort('difficulty').sort('subDifficulty').select('_id difficulty subDifficulty').exec(function (err, levels) {
+            res.send(levels);
         });
     }
 
+		function findOne(req, res){
+			Level.findOne({_id: req.params.id}, function(err, data){
+				if(err){ return res.send(500);}
+				res.send(data);
+			});
+		}
+
     function getNextLevel(req, res) {
-        var currentDifficulty = req.query.currentDifficulty;
-        var currentSubDifficulty = req.query.currentSubDifficulty;
+        var currentDifficulty = req.query.difficulty;
+        var currentSubDifficulty = req.query.subDifficulty;
 
         Level.findOne({
             $or: [
@@ -47,6 +44,7 @@ module.exports = function () {
 
     return {
         getNextLevel: getNextLevel,
-        getAllLevels: getAllLevels
+        getAllLevels: getAllLevels,
+				findOne: findOne
     }
 };
