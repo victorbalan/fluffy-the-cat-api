@@ -14,8 +14,12 @@ var LevelSchema = new mongoose.Schema({
     map: {
         type: String,
         required: true,
-        unique: true,
-        index: false
+        unique: true
+    },
+    levelKey: {
+        type: String,
+        required: true,
+        unique: true
     },
     createdAt: {
         type: Date
