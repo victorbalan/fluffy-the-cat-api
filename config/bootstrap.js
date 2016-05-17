@@ -10,10 +10,10 @@ module.exports = function () {
 		var difficulty = dir.split('.')[0];
 		var difficultyLabel = '5x5';
 		switch(difficulty){
-			case 2:
+			case '2':
 			difficultyLabel = '10x10';
 			break;
-			case 3:
+			case '3':
 			difficultyLabel = '15x15';
 			break;
 		}
