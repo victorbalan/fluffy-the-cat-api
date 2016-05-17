@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var LevelSchema = new mongoose.Schema({
     difficulty: {
-        type: Number,
+        type: Schema.Types.ObjectId,
         required: true,
-        unique: false
+        ref: 'Difficulty'
     },
     subDifficulty: {
         type: Number,
