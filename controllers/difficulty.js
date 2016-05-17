@@ -5,9 +5,9 @@ module.exports = function (Difficulty) {
 	}
 
 	function findAll(req, res) {
-			Difficulty.find(function(err, data){
-				processResponse(res, err, data);
-			});
+		Difficulty.find(function(err, data){
+			processResponse(res, err, data);
+		});
 	}
 
 	function findOne(req, res){
