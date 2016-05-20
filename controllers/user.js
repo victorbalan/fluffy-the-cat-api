@@ -1,16 +1,29 @@
+var https = require('https');
+
 module.exports = function(User){
 	function save(req, res) {
-		var user = new User(req.body);
+		User.findOne({facebookId: req.body.facebookId}, function(err, data){
+			if(err) { res.status(500).send(err); }
+			if(!!data){
+				data.token = req.body.token;
+				data.save(function(err, saved){
+					if(err) { res.status(500).send(err); }
+					res.json(saved);
+					return;
+				});
+			}
+			var user = new User(req.body);
 
-		user.save(function(err, saved){
-			if(err) { res.send(err).status(500); }
-			res.json(saved);
+			user.save(function(err, saved){
+				if(err) { res.status(500).send(err); }
+				res.json(saved);
+			});
 		});
 	}
 
 	function getAll(req, res) {
-		User.find().select('_id username').exec(function(err, users){
-			if(err) { res.send(err).status(500); }
+		User.find().select('_id username email').exec(function(err, users){
+			if(err) { res.status(500).send(err); }
 			res.json(users);
 		});
 	}
@@ -41,10 +54,50 @@ module.exports = function(User){
 		});
 	}
 
+	// ugly code..not in the mood to write anything else :(
+	function refreshFacebookToken(req, res){
+		var token = req.body.token;
+		User.findOne({token: token}, function(err, data){
+			if(err) { res.status(500).send(err); }
+			if(!!data){
+				res.json({token: token});
+			}
+			doFacebookTokenRequest(req, res, token);
+		});
+	}
+
+	function doFacebookTokenRequest(req, res, token){
+		https.get('https://graph.facebook.com/me?access_token=' + token, (fbres) => {
+			var data = '';
+			fbres.on('data', function(chunk){
+				data += chunk
+			});
+			fbres.on('end', function() {
+				var obj = JSON.parse(data);
+				User.findOne({facebookId: obj.id}, function(err, user){
+					if(err) { res.status(500).send(err); }
+					if(user){
+						console.log('registered', user)
+						user.token = token;
+						user.save(function(err){
+							if(err) { return res.send(err);}
+							res.json({token: user.token});
+						});
+					}else{
+						console.log('not registered')
+						res.status(409).send({message: 'Not registered!'});
+					}
+				})
+			});
+		}).on('error', (err) => {
+			if(err) { res.status(500).send(err); }
+		});
+	}
 	return {
 		save: save,
 		getAll: getAll,
 		me: me,
-		login: login
+		login: login,
+		refreshFacebookToken: refreshFacebookToken
 	}
 }

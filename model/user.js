@@ -5,14 +5,27 @@ var UserSchema = new mongoose.Schema({
 	token: {
 		type: String
 	},
+	firstName: {
+		type: String
+	},
+	lastName: {
+		type: String
+	},
+	facebookId: {
+		type: Number,
+		unique: true
+	},
 	username: {
+		type: String,
+		unique: true
+	},
+	email: {
 		type: String,
 		required: true,
 		unique: true
 	},
 	password: {
-		type: String,
-		required: true
+		type: String
 	},
 	createdAt: {
 		type: Date
