@@ -13,6 +13,9 @@ module.exports = function(User){
 				});
 			}
 			var user = new User(req.body);
+			if(!user.username){
+				user.username = user.email;
+			}
 
 			user.save(function(err, saved){
 				if(err) { res.status(500).send(err); }
