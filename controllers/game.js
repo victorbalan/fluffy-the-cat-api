@@ -7,10 +7,24 @@ module.exports = function (Game) {
 	function start(req, res) {
 		new Game({
 			user: req.user._id,
-			level: req.params.level
+			level: req.params.id
 		}).save(function(err, data){
 			processResponse(res, err, data);
 		});
+	}
+
+	function finish(req, res) {
+		Game.update({_id: req.params.id, user: req.user._id},
+			{completedAt: new Date()}, function(err){
+				processResponse(res, err, {message: 'completed'});
+		});
+	}
+
+	function myCompletedGames(req, res){
+		Game.find({user: req.user._id, completedAt: {'$ne': null}})
+		.select('_id level completedAt').exec(function(err, data){
+			processResponse(res, err, data)
+		})
 	}
 
 	function findOne(req, res){
@@ -20,6 +34,8 @@ module.exports = function (Game) {
 	}
 
 	return {
-			start: start
+			start: start,
+			finish: finish,
+			myCompletedGames: myCompletedGames
 	}
 };

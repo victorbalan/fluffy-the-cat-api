@@ -13,7 +13,9 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(passport.initialize());
-app.use(cors());
+app.use(cors({
+	methods: ['OPTIONS', 'GET', 'POST', 'PUT']
+}));
 
 if(process.env.ENV==='dev'){
 	mongoose.connect('mongodb://localhost:27017/fluffy-the-cat');
