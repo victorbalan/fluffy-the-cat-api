@@ -7,6 +7,11 @@ var LevelSchema = new mongoose.Schema({
 		required: true,
 		ref: 'Difficulty'
 	},
+	prev: {
+		type: Schema.Types.ObjectId,
+		unique: true,
+		ref: 'Level'
+	},
 	subDifficulty: {
 		type: Number,
 		required: true,
