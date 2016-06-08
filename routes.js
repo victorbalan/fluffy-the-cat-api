@@ -1,4 +1,5 @@
 var User = require('./model/user');
+var MapRow = require('./model/map_row');
 var Level = require('./model/level');
 var Game = require('./model/game');
 var Difficulty = require('./model/difficulty');
