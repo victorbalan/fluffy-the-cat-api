@@ -1,4 +1,5 @@
 var Level = require('../model/level');
+var MapRow = require('../model/map_row');
 var Difficulty = require('../model/difficulty');
 var mapProcessingService = require('../services/mapProcessingService')
 
@@ -51,23 +52,41 @@ module.exports = function () {
 		if(!filenames || filenames.length === index){
 			return callback(prev);
 		}
-		var levelMap = JSON.stringify(mapProcessingService.process(JSON.parse(fs.readFileSync(prefix + filenames[index]))));
+		var levelMap = mapProcessingService.process(JSON.parse(fs.readFileSync(prefix + filenames[index])));
 		var subDifficulty = filenames[index].split('.')[0];
 		var levelKey = difficulty.value + "-" + subDifficulty;
-		var toSave = {
-			difficulty: difficulty._id,
-			subDifficulty: subDifficulty,
-			map: levelMap,
-			levelKey: levelKey,
-			prev: prev,
-			createdAt: new Date()
-		};
-		Level.findOneAndUpdate({levelKey: levelKey}, toSave, {upsert: true, new: true}, function (err, level) {
-			if(err){ return println(err);}
-			if(!level){
-				return println('!!!!!!!!!!BAD: no difficulty was saved/updated')
-			}
-			recursiveSaveLevels(prefix, filenames, index + 1, difficulty, level._id, callback);
+		saveMapRows(levelMap, 0, [], function(rows){
+			var toSave = {
+				difficulty: difficulty._id,
+				subDifficulty: subDifficulty,
+				map: rows,
+				levelKey: levelKey,
+				prev: prev,
+				createdAt: new Date()
+			};
+			println('saving ' + levelKey);
+			Level.findOneAndUpdate({levelKey: levelKey}, toSave, {upsert: true, new: true}, function (err, level) {
+				if(err){ println(toSave); return println(err);}
+				if(!level){
+					return println('!!!!!!!!!!BAD: no difficulty was saved/updated')
+				}
+				recursiveSaveLevels(prefix, filenames, index + 1, difficulty, level._id, callback);
+			});
+		});
+	}
+
+	function saveMapRows(levelMap, rowIndex, rows, callback){
+		if(!levelMap || rowIndex === levelMap.length){
+			return callback(rows);
+		}
+		var mapRow = new MapRow({
+			values: levelMap[rowIndex],
+			index: rowIndex
+		});
+		mapRow.save(function(err){
+			if(err) { println(mapRow);  return println(err); }
+			rows.push(mapRow._id);
+			saveMapRows(levelMap, rowIndex + 1, rows, callback)
 		});
 	}
 

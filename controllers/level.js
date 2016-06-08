@@ -6,7 +6,11 @@ module.exports = function (Level) {
 	}
 
 	function findOne(req, res){
-		Level.findOne({_id: req.params.id}, function(err, data){
+		Level.findOne({_id: req.params.id})
+			.populate({path: 'map', options: {sort: {index: 'asc'}}}).exec(function(err, data){
+			for(var i = 0; i < data.map.length; i++){
+				data.map[i] = data.map[i].values;
+			}
 			processResponse(res, err, data);
 		});
 	}

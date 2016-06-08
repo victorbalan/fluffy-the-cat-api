@@ -18,7 +18,10 @@ var LevelSchema = new mongoose.Schema({
 		unique: false
 	},
 	map: {
-		type: String,
+		type: [{
+			type: Schema.Types.ObjectId,
+			ref: 'MapRow'
+		}],
 		required: true,
 		unique: true
 	},
