@@ -47,6 +47,9 @@ module.exports = function(router){
 						if(typeof levelMap[i][j] === 'string' && levelMap[i][j].charAt(0)==='l'){
 							var counter = parseInt(levelMap[i][j].substring(1, levelMap[i][j].indexOf('-')));
 							var groundType = levelMap[i][j].substring(levelMap[i][j].indexOf('-') + 1, levelMap[i][j].length);
+							if(counter >= data.length){
+								return res.json(levelMap);
+							}
 							levelMap[i][j] = data[counter].toObject();
 							levelMap[i][j].groundType = groundType;
 						}
