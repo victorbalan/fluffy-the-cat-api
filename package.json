@@ -6,7 +6,8 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "set ENV=dev && nodemon --exec node server.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -16,6 +17,9 @@
     "mongoose": "^4.4.16",
     "passport": "^0.3.2",
     "passport-http-bearer": "^1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
   },
   "keywords": [
     "node",
