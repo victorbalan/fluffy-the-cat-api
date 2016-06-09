@@ -7,7 +7,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "set ENV=dev && nodemon --exec node server.js"
+    "dev": "set ENV=dev&& nodemon --exec node server.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
