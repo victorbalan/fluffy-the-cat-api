@@ -43,6 +43,9 @@ module.exports = function(router){
 			fs.readFile('levels/selection.map', 'utf-8', function (err, content) {
 				if(err){ return res.status(500).json(err);}
 				var levelMap = mapProcessingService.process(JSON.parse(content));
+				var dataPositions = [
+
+				];
 				for(var i=0;i<levelMap.length;i++){
 					for(var j=0;j<levelMap[i].length;j++){
 						if(typeof levelMap[i][j] === 'string' && levelMap[i][j].charAt(0)==='l'){
@@ -51,12 +54,16 @@ module.exports = function(router){
 							if(counter >= data.length){
 								return res.json(levelMap);
 							}
-							levelMap[i][j] = data[counter].toObject();
-							levelMap[i][j].groundType = groundType;
+							levelMap[i][j] = groundType;
+							dataPositions.push({
+								i: i,
+								j: j,
+								data: data[counter]
+							});
 						}
 					}
 				}
-				res.json(levelMap);
+				res.json({map: levelMap, events: dataPositions});
 			});
 		});
 	});
