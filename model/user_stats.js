@@ -5,10 +5,12 @@ var UserStatsSchema = new mongoose.Schema({
 		user: {
 				type: Schema.Types.ObjectId,
 				required: true,
+				unique: true,
 				ref: 'User'
 		},
-		energy: {
-			type: Number
+		lives: {
+			type: Number,
+			default: 9
 		}
 });
 

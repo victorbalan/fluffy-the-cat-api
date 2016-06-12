@@ -18,6 +18,7 @@ app.use(cors());
 if(process.env.ENV==='dev'){
 	mongoose.connect('mongodb://localhost:27017/fluffy-the-cat');
 	require('./config/bootstrap.js')();
+	require('./migrations/migrations.js')();
 }else {
 	mongoose.connect('mongodb://admin:admin@ds021922.mlab.com:21922/fluffy-the-cat');
 }
